@@ -185,3 +185,15 @@ func (gw *Bxgateway) Start(c chan<- string) {
 		}
 	}()
 }
+
+func (gw *Bxgateway) StartNoParse(c chan<- []byte) {
+	go func() {
+		for {
+			_, message, err := gw.conn.ReadMessage()
+			if err != nil {
+				return
+			}
+			c <- message
+		}
+	}()
+}
